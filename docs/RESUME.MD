@@ -54,7 +54,7 @@ _Remote_
 
 ---
 
-## 🛠 Skills
+##  Skills
 
 - **Languages:** Python, C/C++, JavaScript, TypeScript, HTML5/CSS  
 - **Frameworks:** React, Node.js  
