@@ -1,6 +1,6 @@
 # Nayan Allam
 
-![Headshot](profile.jpg)
+<img src="profile.jpg" alt="Headshot" width="75"/>
 
 **Location:** Baltimore, Maryland  
 **Email:** [nayanallam0@gmail.com](mailto:nayanallam0@gmail.com)  
