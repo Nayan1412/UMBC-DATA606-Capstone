@@ -1,14 +1,30 @@
-1. Title and Author
-Project Title: Early Detection of Cognitive Decline Using Speech
-Prepared for UMBC Data Science Master Degree Capstone by Nayan Allam under the guidance of Dr. Chaojie (Jay) Wang
-Author: Nayan Allam
-GitHub Repo: https://github.com/Nayan1412/UMBC-DATA606-Capstone
-LinkedIn: linkedin.com/in/nayan-allam-ba1411122
+# 1. Title and Author  
 
-2. Background
-Cognitive impairment, including Alzheimer's disease and mild cognitive impairment (MCI) is a growing global health concern. Early detection is significant as it allows patients and caregivers to seek early intervention improve quality of life and plan for long-term care.
-Traditional diagnostic methods rely on clinical assessment and memory tests, which are lengthy and identify the condition late after significant decline. Speech, however, is emerging as a good biomarker: language usage, fluency, and voice changes generally occur during early stages of decline.
-The goal of this project is to create a machine learning pipeline that takes audio recordings and transcripts of speech to predict whether an individual has early signs of cognitive decline. By connecting audio signal processing and natural language processing (NLP), we aim to identify subtle differences between at-risk patients and healthy patients.
+**Project Title:** Early Detection of Cognitive Decline Using Speech  
+
+Prepared for **UMBC Data Science Master Degree Capstone**  
+by **Nayan Allam** under the guidance of **Dr. Chaojie (Jay) Wang**  
+
+- **Author:** Nayan Allam  
+- **GitHub Repo:** [UMBC-DATA606-Capstone](https://github.com/Nayan1412/UMBC-DATA606-Capstone)  
+- **LinkedIn:** [linkedin.com/in/nayan-allam-ba1411122](https://linkedin.com/in/nayan-allam-ba1411122)  
+
+## 2. Background  
+
+Cognitive impairment, including **Alzheimer's disease** and **mild cognitive impairment (MCI)**, is a growing global health concern.  
+Early detection is significant as it allows patients and caregivers to seek early intervention, improve quality of life, and plan for long-term care.  
+
+Traditional diagnostic methods rely on **clinical assessments** and **memory tests**, which are often lengthy and tend to identify the condition only after significant decline.  
+
+Speech, however, is emerging as a promising **biomarker**:  
+- Changes in **language usage**,  
+- **Fluency**, and  
+- **Voice characteristics**  
+often occur during the early stages of cognitive decline.  
+
+The goal of this project is to create a **machine learning pipeline** that takes **audio recordings** and their **transcripts** to predict whether an individual shows early signs of cognitive decline.  
+By combining **audio signal processing** with **natural language processing (NLP)**, we aim to identify subtle but meaningful differences between at-risk patients and healthy individuals.  
+
 
 ## 3. Data  
 
