@@ -1,226 +1,248 @@
-# 1. Title and Author
-
-**Project Title:** Early Detection of Cognitive Decline Using Speech  
+# Early Detection of Cognitive Decline Using Speech  
 
 Prepared for **UMBC Data Science Master Degree Capstone**  
-by **Nayan Allam** under the guidance of **Dr. Chaojie (Jay) Wang**
+by **Nayan Allam**  
+Under the guidance of **Dr. Chaojie (Jay) Wang**
 
 - **Author:** Nayan Allam  
 - **GitHub Repository:** https://github.com/Nayan1412/UMBC-DATA606-Capstone  
 - **LinkedIn:** https://linkedin.com/in/nayan-allam-ba1411122  
+- **Project Presentation (PPT):** https://umbc-my.sharepoint.com/:p:/g/personal/nayana1_umbc_edu/IQDK0Sa6QXk6QbXXUWeGqNIWAVO0CLFWQVM4-p9DhaCxpuQ  
 - **Project Demo (YouTube):** https://youtu.be/hfkRF2D4S20  
-- **Final Presentation (PPTX):**  
-  https://umbc-my.sharepoint.com/:p:/g/personal/nayana1_umbc_edu/IQDK0Sa6QXk6QbXXUWeGqNIWAVO0CLFWQVM4-p9DhaCxpuQ?e=Jh1pAf  
 
 ---
 
-## 2. Background
+## 1. Background  
 
-Cognitive impairment, including **Alzheimer’s disease** and **mild cognitive impairment (MCI)**, is a growing global health concern. Early detection is critical because it enables patients and caregivers to seek timely intervention, improve quality of life, and plan for long-term care.
+Cognitive impairment, including **Alzheimer’s disease** and **mild cognitive impairment (MCI)**, is a rapidly growing global health concern. Early detection is critical, as it allows patients and caregivers to seek timely medical intervention, plan long-term care, and improve overall quality of life.
 
-Traditional diagnostic approaches rely on **clinical evaluations, memory tests, and neurological assessments**, which are often time-consuming and typically detect the condition only after noticeable cognitive decline.
+Traditional diagnostic methods rely heavily on **clinical assessments**, **neuropsychological tests**, and **memory evaluations**, which are often time-consuming and typically identify the disease only after noticeable cognitive decline has occurred.
 
-Speech has emerged as a promising **biomarker** for early detection because subtle changes in:
+Recent research shows that **speech patterns** change early in the progression of cognitive decline. These changes include:
+- Altered language usage  
+- Reduced fluency  
+- Increased pauses  
+- Changes in pitch, energy, and articulation  
 
-- Language usage  
-- Speech fluency  
-- Acoustic and voice characteristics  
-
-often appear during the early stages of cognitive decline.
-
-The goal of this project is to develop a **machine learning pipeline** that analyzes **speech audio recordings** (and their transcripts) to predict whether an individual shows early signs of cognitive decline using data-driven methods.
+Because speech can be collected **non-invasively** and **remotely**, it presents a promising opportunity for scalable early screening.
 
 ---
 
-## 3. Data
+## 2. Project Objective  
 
-The dataset used in this project is derived from an **open-access DementiaBank-inspired speech collection** (likely DementiaNet). It consists of **audio recordings (.wav files)** from individuals diagnosed with dementia and healthy control subjects.
+The primary goal of this project is to develop a **machine learning system** that can:
 
-Separate datasets were maintained for:
+- Accept **speech audio recordings** as input  
+- Automatically extract **acoustic features**  
+- Transcribe speech using **automatic speech recognition (ASR)**  
+- Predict whether an individual shows **early signs of cognitive decline**
 
-- Dementia speech samples  
-- Non-dementia (healthy control) samples  
-
-Each audio file was processed to extract structured numerical features and speech transcripts.
-
-### Data Structure
-
-Each processed observation contains:
-
-- **file** – Audio sample identifier  
-- **path** – File path to the corresponding `.wav` file  
-- **label** – Diagnostic group  
-  - `dementia`  
-  - `non-dementia`  
-- **transcript** – Automatically generated speech transcription  
-- **feature_1 – feature_30** – Extracted acoustic features  
+This system is designed as a **complete pipeline**, from raw audio to prediction, and is deployed through an **interactive Streamlit web application**.
 
 ---
 
-## 4. Audio Processing and Transcript Generation
+## 3. Dataset  
 
-Each audio file was processed using a standardized pipeline:
+The dataset is derived from an **open-access DementiaBank-inspired collection** and consists of audio recordings labeled as either:
+- **Dementia**
+- **Non-dementia (healthy controls)**
 
-- Audio loaded at **16 kHz** for consistency  
-- Silence and non-speech segments removed  
-- Speech transcribed using **OpenAI Whisper**  
-- Transcripts stored alongside numerical features  
-
-This step transformed raw speech into **machine-readable structured data**, enabling both acoustic and linguistic analysis.
-
----
-
-## 5. Feature Extraction
-
-From each audio file, **30 low-level acoustic features** were extracted, including:
-
-- **Mel-Frequency Cepstral Coefficients (MFCCs)**  
-- **Spectral centroid, bandwidth, and rolloff**  
-- **Zero-Crossing Rate (ZCR)**  
-
-These features capture **time-domain and frequency-domain** properties of speech associated with cognitive decline.
-
----
-
-## 6. Exploratory Data Analysis (EDA)
-
-Exploratory Data Analysis was performed to assess data quality, feature behavior, and class balance.
-
-### Dataset Summary
-
+### Final Dataset Summary
 - **Total samples:** 354  
-- **Non-dementia:** 223 (62.99%)  
-- **Dementia:** 131 (37.01%)
+- **Non-dementia:** 223 (≈63%)  
+- **Dementia:** 131 (≈37%)  
 
-### Key EDA Observations
-
-- No missing values in audio feature columns  
-- MFCC features show approximately Gaussian distributions  
-- Spectral features exhibit right-skewed distributions  
-- Moderate class imbalance motivates stratified sampling and resampling  
-
----
-
-## 7. Feature Engineering
-
-To capture higher-level speech characteristics, additional engineered features were created:
-
-- Global intensity statistics (mean, median, min, max)  
-- Variability measures (standard deviation, interquartile range)  
-- Energy-based features (total energy, signal power)  
-- Distribution descriptors (skewness, kurtosis)  
-- Normalized intensity ratios  
-
-These features summarize speech dynamics and reduce dependence on individual MFCC coefficients.
+### Data Columns
+- `file`: Audio filename  
+- `path`: Path to `.wav` file  
+- `label`: Dementia or non-dementia  
+- `transcript`: Automatically generated speech transcript  
+- `feature_1` – `feature_30`: Acoustic speech features  
 
 ---
 
-## 8. Statistical Analysis
+## 4. Audio Processing and Transcription  
 
-A **Welch’s t-test** was applied to engineered features to compare dementia and non-dementia groups.
+Each `.wav` audio file was processed using the following steps:
 
-### Findings
+1. **Audio loading** using `librosa` (16 kHz, mono)
+2. **Silence trimming** to remove non-speech segments
+3. **Feature extraction**, including:
+   - MFCC means and standard deviations
+   - Spectral centroid
+   - Spectral bandwidth
+   - Spectral rolloff
+   - Zero-crossing rate
+4. **Speech transcription** using the **OpenAI Whisper model**
+5. Storing all extracted features and transcripts in a structured dataset
 
-- No individual feature reached statistical significance at **p < 0.05**  
-- Cognitive decline manifests as **distributed subtle changes** rather than a single dominant marker  
-- Supports the use of **multivariate machine learning models**  
-
----
-
-## 9. Dimensionality Reduction
-
-**Principal Component Analysis (PCA)** was used for visualization:
-
-- PCA plots show substantial overlap between classes  
-- No clear linear separation observed  
-- Confirms the complexity of speech-based cognitive detection  
+This process converts unstructured audio into a **machine-learning-ready tabular format**.
 
 ---
 
-## 10. Train–Test Splitting
+## 5. Exploratory Data Analysis (EDA)  
+
+EDA was performed using **Plotly** to understand feature distributions and class behavior.
+
+Key observations:
+- MFCC features show approximately **Gaussian distributions**
+- Spectral features exhibit **right-skewed distributions**
+- Dementia and non-dementia classes overlap significantly, indicating that speech differences are **subtle**
+- Class imbalance exists but is not extreme
+
+These findings motivated advanced feature engineering and careful model evaluation.
+
+---
+
+## 6. Feature Engineering  
+
+To improve model performance and interpretability, additional **engineered features** were created:
+
+### Statistical Features
+- Mean, median, min, max
+- Standard deviation
+- Interquartile range
+- Dynamic range
+- Skewness and kurtosis
+
+### Energy-Based Features
+- Total signal energy
+- Signal power
+- Normalized intensity
+
+### Interaction Features
+- Ratios and differences between key MFCC components
+- Latent speech factors using PCA-style aggregation
+
+These engineered features aim to capture **global speech characteristics** rather than frame-level details.
+
+---
+
+## 7. Train–Test Split  
 
 The dataset was split using **stratified sampling**:
+- **Training set:** 80%
+- **Test set:** 20%
 
-- **80% training set**  
-- **20% test set**  
-
-This preserved class proportions during evaluation.
+Stratification ensured that both dementia and non-dementia classes were proportionally represented.
 
 ---
 
-## 11. Model Development
+## 8. Handling Class Imbalance (SMOTE)  
 
-The following supervised learning models were evaluated:
+Although the class imbalance was moderate, **SMOTE (Synthetic Minority Oversampling Technique)** was applied during training to improve recall for dementia cases.
+
+Important observation:
+- SMOTE improved **recall**
+- Sometimes reduced **accuracy**
+- Chosen metric emphasis: **F1-score and Recall**, not accuracy
+
+---
+
+## 9. Machine Learning Models  
+
+The following models were evaluated:
 
 - Logistic Regression  
-- Support Vector Machine (RBF kernel)  
+- Support Vector Machine (RBF)  
 - Random Forest  
 - Gradient Boosting  
 
-To address class imbalance:
-
-- Class-weighted learning  
-- SMOTE oversampling  
-- Feature scaling where required  
+All models were implemented using **pipelines** to ensure clean preprocessing.
 
 ---
 
-## 12. Model Evaluation
+## 10. Hyperparameter Tuning  
 
-Models were evaluated using:
+**GridSearchCV** with 5-fold cross-validation was used to optimize model performance using **F1-score** as the objective.
 
-- Accuracy  
-- Precision  
-- Recall  
-- F1-score  
-- ROC-AUC  
+### Best Performing Model
+- **Logistic Regression**
+  - Test F1-score ≈ **0.52**
+  - ROC-AUC ≈ **0.66**
 
-**Logistic Regression** achieved the best balance between **recall and F1-score**, making it the most suitable model for dementia detection.
-
----
-
-## 13. Hyperparameter Tuning
-
-Hyperparameter optimization was performed using **GridSearchCV** with **5-fold cross-validation** and **F1-score** as the tuning metric.
-
-- Logistic Regression achieved the highest CV F1-score  
-- Tree-based models showed higher accuracy but lower dementia recall  
+This model provided the best balance between precision and recall for dementia detection.
 
 ---
 
-## 14. Discussion
+## 11. Model Evaluation Summary  
 
-Moderate performance reflects:
-
-- Subtle nature of early cognitive decline  
-- High feature correlation  
-- Limited dataset size  
-
-Accuracy alone was not prioritized. **Recall and F1-score** were emphasized due to the higher cost of missing dementia cases.
+Key conclusions:
+- Accuracy alone is misleading for medical screening
+- Logistic Regression generalized better than tree-based models
+- High feature correlation limited maximum achievable performance
+- Speech-based dementia detection is inherently challenging due to subtle differences
 
 ---
 
-## 15. Limitations
+## 12. Pipeline and Model Packaging  
 
-- Limited dataset size  
-- Acoustic features only (no deep linguistic modeling)  
-- Speaker variability and recording conditions  
-- Overlapping feature distributions  
+A complete **production-ready pipeline** was created using `imblearn.pipeline`:
 
----
+Pipeline stages:
+1. SMOTE  
+2. Feature scaling  
+3. Trained classifier  
 
-## 16. Future Work
+The trained pipeline was saved as a **`.pkl` file** using `joblib`.
 
-Future improvements include:
-
-- Incorporating NLP-based transcript features  
-- Deep learning models on spectrograms  
-- Multimodal fusion of audio and text  
-- Validation on larger clinical datasets  
-- Real-time deployment using Streamlit  
+This ensures:
+- Reproducibility
+- Easy reuse
+- Deployment readiness
 
 ---
 
-## 17. Conclusion
+## 13. Streamlit Application  
 
-This project demonstrates the feasibility of using **speech-based machine learning** for early cognitive decline detection. While performance is moderate, the results highlight speech as a **non-invasive, cost-effective screening tool** and establish a strong foundation for future research and clinical applications.
+A **Streamlit web application** was developed to demonstrate real-world usage.
+
+### App Workflow
+1. User uploads a `.wav` audio file  
+2. Audio is processed and features are extracted  
+3. The saved pipeline (`.pkl`) is loaded  
+4. Model outputs a **probability score**
+5. A configurable **decision threshold** determines the final prediction
+
+### Key Design Choice
+A **lower threshold** was used internally to improve dementia sensitivity, ensuring subtle signals are not missed.
+
+---
+
+## 14. Results Interpretation  
+
+The system is not intended as a clinical diagnosis tool, but rather as:
+- An **early screening assistant**
+- A **decision-support system**
+- A research prototype demonstrating feasibility
+
+The results confirm that speech contains meaningful signals related to cognitive decline, though more advanced linguistic features could further improve performance.
+
+---
+
+## 15. Limitations  
+
+- Small dataset size
+- Limited linguistic feature usage
+- High feature correlation
+- Variability in speaker accents and recording quality
+
+---
+
+## 16. Future Work  
+
+- Incorporate advanced NLP features (pause duration, lexical richness)
+- Use transformer-based audio embeddings
+- Expand dataset size
+- Perform longitudinal analysis
+- Integrate clinician feedback
+
+---
+
+## 17. Conclusion  
+
+This project demonstrates that **speech-based machine learning models** can assist in the **early detection of cognitive decline**. By combining signal processing, machine learning pipelines, and a user-friendly Streamlit interface, the system provides a strong foundation for future research and real-world applications.
+
+---
+
+**End of Report**
